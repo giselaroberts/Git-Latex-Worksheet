@@ -1,0 +1,268 @@
+\documentclass[10pt,twocolumn]{article}
+
+% use the oxycomps style file
+\usepackage{oxycomps}
+
+% usage: \fixme[comments describing issue]{text to be fixed}
+% define \fixme as not doing anything special
+\newcommand{\fixme}[2][]{#2}
+% overwrite it so it shows up as red
+\renewcommand{\fixme}[2][]{\textcolor{red}{#2}}
+% overwrite it again so related text shows as footnotes
+%\renewcommand{\fixme}[2][]{\textcolor{red}{#2\footnote{#1}}}
+
+% read references.bib for the bibtex data
+\bibliography{references}
+
+% include metadata in the generated pdf file
+\pdfinfo{
+    /Title (Git and LaTeX Worksheet)
+    /Author (Justin Li)
+}
+
+% set the title and author information
+\title{Git and \LaTeX Worksheet}
+\author{Justin Li}
+\affiliation{Occidental College}
+\email{justinnhli@oxy.edu}
+
+\begin{document}
+
+\maketitle
+
+\section{Instructions}
+
+This worksheet is due March 1, 2025 at midnight, to be submitted as a GitHub repository URL to Canvas. The repository should contain all files requires to compile this worksheet with your answers. You should only change this \texttt{document.tex} file and the  \texttt{references.bib} file; do not change any other file in this starting repository. You should not use any additional packages, and are not allowed to use the \texttt{{\textbackslash}usepackage\{\}} command. Additionally, the output should be formatted correctly: your answers should be appropriately nested under the questions, command-line commands should be in monospace, and images should be positioned appropriately.
+
+\section{Git Questions}
+
+\subsection{General questions}
+
+\begin{enumerate}
+    \item What is a version control system? Why are they useful?
+
+    A version control system is a tool that tracks changes to files over time, allowing multiple users to collaborate, and access previous versions. It is useful for software development because it prevents loss of data and organizes collaboration.
+    
+    \item What is the difference between git and GitHub?
+
+    Git is a version control system, while GitHub is a platform that hosts Git repositories and provides extra tools.
+    
+    \item What is a repository?
+
+    A repository is a storage location for a project's files, like code and revision history, managed by a version control system like Git.
+    
+    \item What is a commit?
+
+    A commit is a snapshot of changes made to a repository, saving the current state of files.
+    
+    \item What is the commit graph?
+
+    The commit graph is a visual representation of a repository's commit history
+    
+    \item What is your preferred local git client (eg., command line, GitHub Desktop, GitKraken, etc.)?
+
+    GitHub Desktop
+    
+\end{enumerate}
+
+\subsection{Local Usage}
+
+\begin{enumerate}
+\item What is the difference between adding a file to the staging area and committing a file?
+
+Adding a file to the staging area in Git prepares it for a commit by marking it for inclusion in the next snapshot, while committing a file permanently saves the staged changes to the repository with a unique identifier and message.
+
+\item What is a commit message, and why is it important for them to be meaningful?
+
+A commit message is a description given by the developer along with the commit to describe specifically what has changed in the commit from the last. It is important to be meaningful so they can be referenced and understood in the future/ by teammates.
+
+\item Starting with an empty repository, what sequence of commands/actions would result in the following commit graph? You may give a sequence of \texttt{git} commands, or describe (with screenshots) how you would do this in your preferred graphical git interface.
+\begin{verbatim}
+A---B---C---D
+\end{verbatim}
+
+git init
+echo "Initial commit" > file.txt
+git add file.txt
+git commit -m "Commit A"
+echo "Second commit" >> file.txt
+git add file.txt
+git commit -m "Commit B"
+echo "Thrid commit" >> file.txt
+git add file.txt
+git commit -m "Commit C"
+echo "Fourth commit >> file.txt
+git add file.txt
+git commit -m "commit D"
+
+
+\item If you are currently at commit D above, how would you recover code from commit B? What sequence of commands/actions would let you do so? You may give a sequence of \texttt{git} command-line commands, or describe (with screenshots) how you would do this in your preferred graphical git interface. Assume the commit hashes are AAAAAA..., BBBBBB..., etc.
+
+git checkout BBBBBB
+
+
+\item Imagine you created a git repository for your project, but only commit your changes once a week on Sundays. You got your code working on Tuesday, but then broke your code on Friday. What can you do to get the working version of your code back?
+
+git checkout -- file
+
+
+\end{enumerate}
+
+\subsection{Branching and Merging}
+
+\begin{enumerate}
+\item What is a branch? Why are they useful?
+
+A branch in Git is like a copy of your project where you can make changes without affecting the main version. It helps you work on new features or fixes safely and merge them back when they’re ready.
+
+
+
+\item Starting with an empty repository, what sequence of commands/actions would result in the following commit graph? You may give a sequence of \texttt{git} command-line commands, or describe (with screenshots) how you would do this in your preferred graphical git interface.
+\begin{verbatim}
+A---B---C---D
+     \
+      E---F
+\end{verbatim}
+
+git init
+
+echo "initial commit" > file.txt
+git add file.txt
+git commit -m "commit A"
+
+echo "second commit" >> file.txt
+git add file.txt
+git commit -m "commit B"
+
+git branch new-feature
+git chechout new-feature
+
+echo "feature commit 1" >> file.txt
+git add file.txt
+git commit -m "commit E"
+
+echo "feature commit 2" >> file.txt
+git add file.txt
+git commit -m "commit F"
+
+git checkout main
+
+echo "third commit on main" >> file.txt
+git add file.txt
+git commit -m "commit C"
+
+echo "fourth commit on main" >> file.txt
+git add file.txt
+git commit -m "commit D"
+
+
+\item Why is a merge? Why are they useful?
+
+A merge combines changes from one branch into another. This is useful because it allows multiple people to work on different parts/features at the same time.
+
+\item Imagine you are currently at commit D above. What sequence of commands/actions would result in the following commit graph? You may give a sequence of \texttt{git} commands, or describe (with screenshots) how you would do this in your preferred graphical git interface.
+\begin{verbatim}
+A---B---C---D---G
+     \         /
+      E---F---/
+\end{verbatim}
+
+git checkout main
+git checkout -b new-feature B
+echo "feature commit 1" >> file.txt
+git add file.txt
+git commit -m "commit E 1"
+
+echo "feature branch commit 2" >> file.txt
+git add file.txt
+git commit -m "commit F 2"
+
+git checkout main
+
+git merge new-feature -m "commit G merge feature to main"
+
+
+\item What is a merge conflict? When do they occur?
+
+A merge conflict is when git can't combine changes from two branches because the same part was modified differently in each branch. they occur during a merge.
+
+\item Starting with an empty repository, despite a sequence of commands/actions that would result in a merge conflict. Include the exact edits and \texttt{git} commands or screenshots of the graphical git interface. Include the output or screenshot that shows the resulting merge conflict.
+
+git init
+
+echo "Hi" > file.txt
+git add file.txt
+git commit -m "first"
+
+git branch feature-branch
+fit checkout feature-branch
+
+echo "feature branch change" > file.txt
+git add file.txt
+git commit -m "feature branch commit"
+
+git checkout main
+
+echo "main branch change" >file.txt
+git add file.txt
+git commit -m "main commit"
+
+git merge feature-branch
+
+
+
+Output:
+
+Auto-merging file.txt
+CONFLICT(content): Merge conflict in file.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+\end{enumerate}
+
+\subsection{Remotes}
+
+\begin{enumerate}
+\item What is a remote?
+
+A remote is a copy of the repository stored on a server. Like Github.
+
+\item What does pushing and pulling do?
+
+pushing uploads your local commits to the remote repository. Pulling downloads the latest changes from the remote and merges them into local branch. 
+
+
+\item Imagine you created a git repository for your project on your laptop and commit regularly, but only push your code to GitHub once a week on Sundays. Your laptop caught on fire on Friday. What can you do to get your code back?
+
+clone your repository from Github 
+
+\end{enumerate}
+
+\section{\LaTeX}
+
+Find a source of each of the following types and add it to \texttt{references.bib}, with the appropriate data. Your sources do not have to relate to your project. Looking at \textcite{OverleafBibliographyManagement} and \textcite{WikipediaBibtex} may be helpful,
+
+\begin{itemize}
+\item a journal article
+\cite{gupta_distraction_2019}
+\item a conference article
+\cite{li_pm4music_2024}
+\item a PhD or Master's thesis
+\cite{usher_visualization_2023}
+\item an article in an edited popular media venue (newspaper, magazine, etc.)
+\item a book
+\cite{payling_electronic_2023}
+\item a chapter of a book
+\item a YouTube video
+\cite{pypahs_art_50_2017}
+\item a piece of technical documentation (e.g., a programming language reference, and API documentation, etc.)
+\cite{noauthor_canvas_2024}
+\end{itemize}
+
+Additionally, in you own words, explain the difference between \texttt{{\textbackslash}cite\{\}} and \texttt{{\textbackslash}textcite\{\}}. When should they each be used? Demonstrate your answers by using one of them with each of your references from above.
+
+cite  is used for intext citations like this \cite{beigi_fundamentals_2011} while text cite is used for incorporating into sentences like this \textcite{beigi_fundamentals_2011}
+
+\printbibliography
+
+\end{document}
